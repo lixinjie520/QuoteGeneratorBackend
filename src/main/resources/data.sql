@@ -1,0 +1,47 @@
+TRUNCATE TABLE quotes RESTART IDENTITY;
+
+INSERT INTO quotes (content, author, category, created_at, updated_at) VALUES
+                                                                               ('The best way to predict the future is to create it.', 'Peter Drucker', 'Motivation', NOW(), NULL),
+                                                                               ('Success is not final, failure is not fatal: it is the courage to continue that counts.', 'Winston Churchill', 'Motivation', NOW(), NULL),
+                                                                               ('It always seems impossible until it is done.', 'Nelson Mandela', 'Motivation', NOW(), NULL),
+                                                                               ('Believe you can and you are halfway there.', 'Theodore Roosevelt', 'Motivation', NOW(), NULL),
+                                                                               ('Do not wait. The time will never be just right.', 'Napoleon Hill', 'Motivation', NOW(), NULL),
+                                                                               ('The only limit to our realization of tomorrow is our doubts of today.', 'Franklin D. Roosevelt', 'Motivation', NOW(), NULL),
+                                                                               ('Dream big and dare to fail.', 'Norman Vaughan', 'Motivation', NOW(), NULL),
+                                                                               ('Start where you are. Use what you have. Do what you can.', 'Arthur Ashe', 'Motivation', NOW(), NULL),
+
+                                                                               ('Small progress is still progress.', 'Unknown', 'Growth', NOW(), NULL),
+                                                                               ('Turn your wounds into wisdom.', 'Oprah Winfrey', 'Growth', NOW(), NULL),
+                                                                               ('Difficulties in life are intended to make us better, not bitter.', 'Dan Reeves', 'Growth', NOW(), NULL),
+                                                                               ('In the middle of every difficulty lies opportunity.', 'Albert Einstein', 'Growth', NOW(), NULL),
+                                                                               ('The journey of a thousand miles begins with one step.', 'Lao Tzu', 'Growth', NOW(), NULL),
+                                                                               ('What we think, we become.', 'Buddha', 'Growth', NOW(), NULL),
+                                                                               ('The greatest glory in living lies not in never falling, but in rising every time we fall.', 'Nelson Mandela', 'Growth', NOW(), NULL),
+                                                                               ('Life is a succession of lessons which must be lived to be understood.', 'Ralph Waldo Emerson', 'Growth', NOW(), NULL),
+
+                                                                               ('Learning never exhausts the mind.', 'Leonardo da Vinci', 'Learning', NOW(), NULL),
+                                                                               ('Live as if you were to die tomorrow. Learn as if you were to live forever.', 'Mahatma Gandhi', 'Learning', NOW(), NULL),
+                                                                               ('Education is the most powerful weapon which you can use to change the world.', 'Nelson Mandela', 'Learning', NOW(), NULL),
+                                                                               ('The beautiful thing about learning is that no one can take it away from you.', 'B.B. King', 'Learning', NOW(), NULL),
+                                                                               ('An investment in knowledge pays the best interest.', 'Benjamin Franklin', 'Learning', NOW(), NULL),
+                                                                               ('Tell me and I forget. Teach me and I remember. Involve me and I learn.', 'Benjamin Franklin', 'Learning', NOW(), NULL),
+                                                                               ('The more that you read, the more things you will know.', 'Dr. Seuss', 'Learning', NOW(), NULL),
+                                                                               ('The expert in anything was once a beginner.', 'Helen Hayes', 'Learning', NOW(), NULL),
+
+                                                                               ('Well done is better than well said.', 'Benjamin Franklin', 'Action', NOW(), NULL),
+                                                                               ('Action is the foundational key to all success.', 'Pablo Picasso', 'Action', NOW(), NULL),
+                                                                               ('You miss 100 percent of the shots you do not take.', 'Wayne Gretzky', 'Action', NOW(), NULL),
+                                                                               ('Do one thing every day that scares you.', 'Eleanor Roosevelt', 'Action', NOW(), NULL),
+                                                                               ('Act as if what you do makes a difference. It does.', 'William James', 'Action', NOW(), NULL),
+                                                                               ('Opportunities do not happen. You create them.', 'Chris Grosser', 'Action', NOW(), NULL),
+                                                                               ('If opportunity does not knock, build a door.', 'Milton Berle', 'Action', NOW(), NULL),
+                                                                               ('The secret of getting ahead is getting started.', 'Mark Twain', 'Action', NOW(), NULL),
+
+                                                                               ('Quality is not an act, it is a habit.', 'Aristotle', 'Wisdom', NOW(), NULL),
+                                                                               ('Happiness depends upon ourselves.', 'Aristotle', 'Wisdom', NOW(), NULL),
+                                                                               ('Everything has beauty, but not everyone sees it.', 'Confucius', 'Wisdom', NOW(), NULL),
+                                                                               ('It does not matter how slowly you go as long as you do not stop.', 'Confucius', 'Wisdom', NOW(), NULL),
+                                                                               ('A goal without a plan is just a wish.', 'Antoine de Saint-Exupéry', 'Wisdom', NOW(), NULL),
+                                                                               ('The purpose of our lives is to be happy.', 'Dalai Lama', 'Wisdom', NOW(), NULL),
+                                                                               ('Everything you can imagine is real.', 'Pablo Picasso', 'Wisdom', NOW(), NULL),
+                                                                               ('Light tomorrow with today.', 'Elizabeth Barrett Browning', 'Wisdom', NOW(), NULL);
