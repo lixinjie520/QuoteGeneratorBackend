@@ -3,6 +3,7 @@ package com.amber.quotegeneratorbackend.controller;
 import com.amber.quotegeneratorbackend.entity.Quote;
 import com.amber.quotegeneratorbackend.service.QuoteService;
 import jakarta.servlet.ServletRequest;
+import jakarta.websocket.server.PathParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -62,4 +63,27 @@ public class QuoteController {
         }
 
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Quote>> searchQuotes(@RequestParam String keyword){
+        List<Quote> quotes = quoteService.searchQuotes(keyword);
+
+        if(quotes.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(quotes);
+    }
+
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<Quote>> getQuotesByCategory(@PathVariable String category){
+        List<Quote> quotes = quoteService.getQuotesByCategory(category);
+
+        if(quotes.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(quotes);
+    }
+
 }

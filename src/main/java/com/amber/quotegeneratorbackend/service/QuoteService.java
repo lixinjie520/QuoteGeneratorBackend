@@ -48,4 +48,12 @@ public class QuoteService {
         quoteRepository.deleteById(id);
         return true;
     }
+
+    public List<Quote> searchQuotes(String keyword) {
+        return quoteRepository.searchByKeyword(keyword);
+    }
+
+    public List<Quote> getQuotesByCategory(String category) {
+        return quoteRepository.findQuotesByCategoryIgnoreCase(category);
+    }
 }
