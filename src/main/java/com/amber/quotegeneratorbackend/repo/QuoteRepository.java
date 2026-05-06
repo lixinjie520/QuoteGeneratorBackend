@@ -15,8 +15,9 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
             SELECT q FROM Quote q
             WHERE LOWER(q.content) LIKE LOWER(CONCAT('%', :keyword, '%'))
               OR LOWER(q.author) LIKE LOWER(CONCAT('%', :keyword, '%'))
+              OR LOWER(q.category) LIKE LOWER(CONCAT('%', :keyword, '%'))
   """)
     List<Quote> searchByKeyword(@Param("keyword") String keyword);
 
-    List<Quote> findQuotesByCategoryIgnoreCase(String category);
+    List<Quote> findQuotesByCategoryIgnoreCase(@Param("category") String category);
 }

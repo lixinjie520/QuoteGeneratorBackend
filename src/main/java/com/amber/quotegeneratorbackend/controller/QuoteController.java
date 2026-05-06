@@ -22,8 +22,20 @@ public class QuoteController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Quote>> getAllQuotes(){
-        List<Quote> quotes = quoteService.getAllQuotes();
+    public ResponseEntity<List<Quote>> getAllQuotes(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String keyword
+    ){
+        List<Quote> quotes;
+
+        if(category != null && !category.isBlank()
+        ){
+            quotes = quoteService.getQuotesByCategory(category);
+        }else if(keyword != null && !keyword.isBlank()){
+            quotes = quoteService.searchQuotes(keyword);
+        }else{
+            quotes = quoteService.getAllQuotes();
+        }
 
         if(quotes.isEmpty()){
             return ResponseEntity.noContent().build();
@@ -62,28 +74,6 @@ public class QuoteController {
             return ResponseEntity.notFound().build();// 404
         }
 
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<List<Quote>> searchQuotes(@RequestParam String keyword){
-        List<Quote> quotes = quoteService.searchQuotes(keyword);
-
-        if(quotes.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.ok(quotes);
-    }
-
-    @GetMapping("/category/{category}")
-    public ResponseEntity<List<Quote>> getQuotesByCategory(@PathVariable String category){
-        List<Quote> quotes = quoteService.getQuotesByCategory(category);
-
-        if(quotes.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.ok(quotes);
     }
 
 }
