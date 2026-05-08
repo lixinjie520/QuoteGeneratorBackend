@@ -51,6 +51,17 @@ public class QuoteController {
                 .orElseGet(()->ResponseEntity.notFound().build()); //404 Not Found
     }
 
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<Quote>> getQuotesByCategory(@PathVariable String category){
+        List<Quote> quotes = quoteService.getQuotesByCategory(category);
+
+        if(quotes.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(quotes);
+    }
+
     @PostMapping
     public ResponseEntity<Quote> addQuote(@RequestBody Quote quote){
         Quote savedQuote = quoteService.addQuote(quote);
