@@ -52,10 +52,8 @@ public class QuoteController {
 
     @GetMapping("/{id}")
     public ResponseEntity<QuoteResponse> getQuoteById(@PathVariable Long id){
-        return quoteService.getQuoteById(id)
-                .map(QuoteMapper::toResponse)
-                .map(ResponseEntity::ok)
-                .orElseGet(()->ResponseEntity.notFound().build());
+        Quote quote = quoteService.getQuoteById(id);
+        return ResponseEntity.ok(QuoteMapper.toResponse(quote));
     }
 
     @GetMapping("/category/{category}")
@@ -86,26 +84,22 @@ public class QuoteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<QuoteResponse> updateQuote(@PathVariable Long id, @RequestBody QuoteRequest request){
+    public ResponseEntity<QuoteResponse> updateQuote(
+            @PathVariable Long id,
+            @RequestBody QuoteRequest request){
 
         Quote quote = QuoteMapper.toEntity(request);
 
-        return quoteService.updateQuote(id, quote)
-                .map(QuoteMapper::toResponse)
-                .map(ResponseEntity::ok)
-                .orElseGet(()->ResponseEntity.notFound().build());
+        Quote updated = quoteService.updateQuote(id, quote);
+
+        return ResponseEntity.ok(QuoteMapper.toResponse(updated));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteQuote(@PathVariable Long id){
-        boolean deleted = quoteService.deleteQuote(id);
+        quoteService.deleteQuote(id);
 
-        if(deleted){
-            return ResponseEntity.noContent().build();// 204
-        }else{
-            return ResponseEntity.notFound().build();// 404
-        }
-
+        return ResponseEntity.noContent().build();
     }
 
 }
