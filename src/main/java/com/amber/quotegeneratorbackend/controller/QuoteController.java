@@ -1,5 +1,7 @@
 package com.amber.quotegeneratorbackend.controller;
 
+import com.amber.quotegeneratorbackend.dto.QuoteRequest;
+import com.amber.quotegeneratorbackend.dto.QuoteResponse;
 import com.amber.quotegeneratorbackend.entity.Quote;
 import com.amber.quotegeneratorbackend.service.QuoteService;
 import jakarta.servlet.ServletRequest;
@@ -22,18 +24,17 @@ public class QuoteController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Quote>> getAllQuotes(
+    public ResponseEntity<List<QuoteResponse>> getAllQuotes(
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String keyword
     ){
         List<Quote> quotes;
 
-        if(category != null && !category.isBlank()
-        ){
+        if(category != null && !category.isBlank()){
             quotes = quoteService.getQuotesByCategory(category);
-        }else if(keyword != null && !keyword.isBlank()){
+        } else if(keyword != null && !keyword.isBlank()){
             quotes = quoteService.searchQuotes(keyword);
-        }else{
+        } else {
             quotes = quoteService.getAllQuotes();
         }
 
@@ -41,37 +42,98 @@ public class QuoteController {
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.ok(quotes);
+        List<QuoteResponse> response = quotes.stream().map(q -> {
+            QuoteResponse res = new QuoteResponse();
+            res.setId(q.getId());
+            res.setContent(q.getContent());
+            res.setAuthor(q.getAuthor());
+            res.setCategory(q.getCategory());
+            res.setCreatedAt(q.getCreatedAt());
+            res.setUpdatedAt(q.getUpdatedAt());
+            return res;
+        }).toList();
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Quote> getQuoteById(@PathVariable Long id){
-        return quoteService.getQuoteById(id) //Optional<Quote>
-                .map(ResponseEntity::ok) //.map(quote -> ResponseEntity.ok(quote))
-                .orElseGet(()->ResponseEntity.notFound().build()); //404 Not Found
+    public ResponseEntity<QuoteResponse> getQuoteById(@PathVariable Long id){
+        return quoteService.getQuoteById(id)
+                .map(quote -> {
+                    QuoteResponse res = new QuoteResponse();
+                    res.setId(quote.getId());
+                    res.setContent(quote.getContent());
+                    res.setAuthor(quote.getAuthor());
+                    res.setCategory(quote.getCategory());
+                    res.setCreatedAt(quote.getCreatedAt());
+                    res.setUpdatedAt(quote.getUpdatedAt());
+                    return ResponseEntity.ok(res);
+                })
+                .orElseGet(()->ResponseEntity.notFound().build());
     }
 
     @GetMapping("/category/{category}")
-    public ResponseEntity<List<Quote>> getQuotesByCategory(@PathVariable String category){
+    public ResponseEntity<List<QuoteResponse>> getQuotesByCategory(@PathVariable String category){
         List<Quote> quotes = quoteService.getQuotesByCategory(category);
 
-        if(quotes.isEmpty()){
+        if (quotes.isEmpty()){
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.ok(quotes);
+        List<QuoteResponse> response = quotes.stream().map(q -> {
+            QuoteResponse res = new QuoteResponse();
+            res.setId(q.getId());
+            res.setContent(q.getContent());
+            res.setAuthor(q.getAuthor());
+            res.setCategory(q.getCategory());
+            res.setCreatedAt(q.getCreatedAt());
+            res.setUpdatedAt(q.getUpdatedAt());
+            return res;
+        }).toList();
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping
-    public ResponseEntity<Quote> addQuote(@RequestBody Quote quote){
-        Quote savedQuote = quoteService.addQuote(quote);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedQuote);
+    public ResponseEntity<QuoteResponse> addQuote(@RequestBody QuoteRequest request){
+
+        Quote quote = new Quote();
+        quote.setContent(request.getContent());
+        quote.setAuthor(request.getAuthor());
+        quote.setCategory(request.getCategory());
+
+        Quote saved = quoteService.addQuote(quote);
+
+        QuoteResponse res = new QuoteResponse();
+        res.setId(saved.getId());
+        res.setContent(saved.getContent());
+        res.setAuthor(saved.getAuthor());
+        res.setCategory(saved.getCategory());
+        res.setCreatedAt(saved.getCreatedAt());
+        res.setUpdatedAt(saved.getUpdatedAt());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Quote> updateQuote(@PathVariable Long id, @RequestBody Quote quote){
+    public ResponseEntity<QuoteResponse> updateQuote(@PathVariable Long id, @RequestBody QuoteRequest request){
+
+        Quote quote = new Quote();
+        quote.setContent(request.getContent());
+        quote.setAuthor(request.getAuthor());
+        quote.setCategory(request.getCategory());
+
         return quoteService.updateQuote(id, quote)
-                .map(ResponseEntity::ok)
+                .map(q -> {
+                    QuoteResponse res = new QuoteResponse();
+                    res.setId(q.getId());
+                    res.setContent(q.getContent());
+                    res.setAuthor(q.getAuthor());
+                    res.setCategory(q.getCategory());
+                    res.setCreatedAt(q.getCreatedAt());
+                    res.setUpdatedAt(q.getUpdatedAt());
+                    return ResponseEntity.ok(res);
+                })
                 .orElseGet(()->ResponseEntity.notFound().build());
     }
 
