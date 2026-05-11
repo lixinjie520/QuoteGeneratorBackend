@@ -3,6 +3,7 @@ package com.amber.quotegeneratorbackend.controller;
 import com.amber.quotegeneratorbackend.dto.QuoteRequest;
 import com.amber.quotegeneratorbackend.dto.QuoteResponse;
 import com.amber.quotegeneratorbackend.entity.Quote;
+import com.amber.quotegeneratorbackend.mapper.QuoteMapper;
 import com.amber.quotegeneratorbackend.service.QuoteService;
 import jakarta.servlet.ServletRequest;
 import jakarta.websocket.server.PathParam;
@@ -42,16 +43,9 @@ public class QuoteController {
             return ResponseEntity.noContent().build();
         }
 
-        List<QuoteResponse> response = quotes.stream().map(q -> {
-            QuoteResponse res = new QuoteResponse();
-            res.setId(q.getId());
-            res.setContent(q.getContent());
-            res.setAuthor(q.getAuthor());
-            res.setCategory(q.getCategory());
-            res.setCreatedAt(q.getCreatedAt());
-            res.setUpdatedAt(q.getUpdatedAt());
-            return res;
-        }).toList();
+        List<QuoteResponse> response = quotes.stream()
+                .map(QuoteMapper::toResponse)// q -> QuoteMapper.toResponse(q)
+                .toList();
 
         return ResponseEntity.ok(response);
     }
@@ -59,16 +53,8 @@ public class QuoteController {
     @GetMapping("/{id}")
     public ResponseEntity<QuoteResponse> getQuoteById(@PathVariable Long id){
         return quoteService.getQuoteById(id)
-                .map(quote -> {
-                    QuoteResponse res = new QuoteResponse();
-                    res.setId(quote.getId());
-                    res.setContent(quote.getContent());
-                    res.setAuthor(quote.getAuthor());
-                    res.setCategory(quote.getCategory());
-                    res.setCreatedAt(quote.getCreatedAt());
-                    res.setUpdatedAt(quote.getUpdatedAt());
-                    return ResponseEntity.ok(res);
-                })
+                .map(QuoteMapper::toResponse)
+                .map(ResponseEntity::ok)
                 .orElseGet(()->ResponseEntity.notFound().build());
     }
 
@@ -80,16 +66,9 @@ public class QuoteController {
             return ResponseEntity.noContent().build();
         }
 
-        List<QuoteResponse> response = quotes.stream().map(q -> {
-            QuoteResponse res = new QuoteResponse();
-            res.setId(q.getId());
-            res.setContent(q.getContent());
-            res.setAuthor(q.getAuthor());
-            res.setCategory(q.getCategory());
-            res.setCreatedAt(q.getCreatedAt());
-            res.setUpdatedAt(q.getUpdatedAt());
-            return res;
-        }).toList();
+        List<QuoteResponse> response = quotes.stream()
+                .map(QuoteMapper::toResponse)
+                .toList();
 
         return ResponseEntity.ok(response);
     }
@@ -97,20 +76,11 @@ public class QuoteController {
     @PostMapping
     public ResponseEntity<QuoteResponse> addQuote(@RequestBody QuoteRequest request){
 
-        Quote quote = new Quote();
-        quote.setContent(request.getContent());
-        quote.setAuthor(request.getAuthor());
-        quote.setCategory(request.getCategory());
+        Quote quote = QuoteMapper.toEntity(request);
 
         Quote saved = quoteService.addQuote(quote);
 
-        QuoteResponse res = new QuoteResponse();
-        res.setId(saved.getId());
-        res.setContent(saved.getContent());
-        res.setAuthor(saved.getAuthor());
-        res.setCategory(saved.getCategory());
-        res.setCreatedAt(saved.getCreatedAt());
-        res.setUpdatedAt(saved.getUpdatedAt());
+        QuoteResponse res = QuoteMapper.toResponse(saved);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
@@ -118,22 +88,11 @@ public class QuoteController {
     @PutMapping("/{id}")
     public ResponseEntity<QuoteResponse> updateQuote(@PathVariable Long id, @RequestBody QuoteRequest request){
 
-        Quote quote = new Quote();
-        quote.setContent(request.getContent());
-        quote.setAuthor(request.getAuthor());
-        quote.setCategory(request.getCategory());
+        Quote quote = QuoteMapper.toEntity(request);
 
         return quoteService.updateQuote(id, quote)
-                .map(q -> {
-                    QuoteResponse res = new QuoteResponse();
-                    res.setId(q.getId());
-                    res.setContent(q.getContent());
-                    res.setAuthor(q.getAuthor());
-                    res.setCategory(q.getCategory());
-                    res.setCreatedAt(q.getCreatedAt());
-                    res.setUpdatedAt(q.getUpdatedAt());
-                    return ResponseEntity.ok(res);
-                })
+                .map(QuoteMapper::toResponse)
+                .map(ResponseEntity::ok)
                 .orElseGet(()->ResponseEntity.notFound().build());
     }
 
