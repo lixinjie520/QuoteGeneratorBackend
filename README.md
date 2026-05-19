@@ -144,7 +144,7 @@ Common handled errors include:
 
 The project uses PostgreSQL.
 
-Example `application.properties`:
+Example `application-example.properties`:
 
 ```properties
 spring.application.name=quotegeneratorbackend
